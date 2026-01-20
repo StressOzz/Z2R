@@ -39,6 +39,7 @@ echo -e "${GREEN}Ещё чуть-чуть...${NC}"; install_pkg "luci-app-zapret
 rm -rf "$TMP"
 
 echo -e "${GREEN}Настраиваем...${NC}"
+wget -qO /opt/zapret2/ipset/zapret_hosts_user_exclude.txt https://raw.githubusercontent.com/StressOzz/Zapret-Manager/refs/heads/main/zapret-hosts-user-exclude.txt
 sed -i "/config strategy 'default'/,/config /s/option enabled '0'/option enabled '1'/" /etc/config/zapret2
 sed -i "/^--lua-desync=hostfakesplit:midhost=host-2:host=rzd\.ru:tcp_seq=0:tcp_ack=-66000:badsum:strategy=14:final'/ s/host=rzd\.ru/host=google.com/" /etc/config/zapret2
 sed -i -e "s/rzd\.ru/max.ru/g" -e "s/m\.ok\.ru/max.ru/g" /etc/config/zapret2
