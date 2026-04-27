@@ -42,7 +42,8 @@ routerich_add() {
 	if echo "$MODEL" | grep -qi routerich; then 
 	echo -e "\n${GREEN}У Вас роутер ${NC}Routerich${GREEN}, добавление не требуется!${NC}"
 	PAUSE
-	return; fi
+	return
+	fi
     sed -i 's/option check_signature/# option check_signature/' /etc/opkg.conf
     echo 'src/gz routerich https://github.com/routerich/packages.routerich/raw/24.10.6/routerich' > /etc/opkg/customfeeds.conf
     opkg update
@@ -79,6 +80,7 @@ sed -i "/config strategy 'default'/,/config /s/option enabled '0'/option enabled
 /etc/init.d/zapret2 restart >/dev/null 2>&1
     echo -e "\nZapret2 ${GREEN}установлен${NC}"
 	PAUSE
+fi
 }
 
 remove_zapret() {
@@ -161,11 +163,7 @@ PKGPOSTFIX="_v${VERSION}_${PKGARCH}_${TARGET}_${SUBTARGET}.apk"
 INSTALL_CMD="apk add --allow-untrusted"
 else
 echo -e "${CYAN}Обновляем список пакетов${NC}"
-opkg update >/dev/null 2>&1 || {
-echo -e "\n${RED}Ошибка при обновлении списка пакетов!${NC}"
-PAUSE
-return
-}
+opkg update >/dev/null 2>&1 || { echo -e "\n${RED}Ошибка при обновлении списка пакетов!${NC}"; PAUSE; }
 PKGARCH=$(opkg print-architecture | awk 'BEGIN {max=0} {if ($3 > max) {max=$3; arch=$2}} END {print arch}')
 PKGPOSTFIX="_v${VERSION}_${PKGARCH}_${TARGET}_${SUBTARGET}.ipk"
 INSTALL_CMD="opkg install"
