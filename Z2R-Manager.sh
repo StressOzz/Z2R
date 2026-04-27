@@ -11,13 +11,15 @@ DGRAY="\033[38;5;244m"
 
 MODEL="$(cat /tmp/sysinfo/model 2>/dev/null)"
 BASE_URL="https://github.com/Slava-Shchipunov/awg-openwrt/releases/download/"
-
+tmpDIR="/tmp"
 IF_NAME="AWG"
 PROTO="amneziawg"
 DEV_NAME="amneziawg0"
 PKG_MANAGER="opkg list-installed 2>/dev/null"
 
-pkg_remove="opkg remove --force-depends $pkg_name"
+pkg_remove() {
+    opkg remove --force-depends "$1"
+}
 
 PAUSE() { echo -ne "\nНажмите Enter..."; read dummy; }
 
@@ -67,20 +69,21 @@ is_installed() {
 install_zapret() {
 
 if ! echo "$MODEL" | grep -qi routerich; then
-if ! grep -q "routerich/packages.routerich" /etc/opkg/customfeeds.conf 2>/dev/null; then
-    echo -e "\n${CYAN}Добавляем пакеты Routerich${NC}"
-    sed -i 's/option check_signature/# option check_signature/' /etc/opkg.conf
-    echo 'src/gz routerich https://github.com/routerich/packages.routerich/raw/24.10.6/routerich' > /etc/opkg/customfeeds.conf
+    if ! grep -q "routerich/packages.routerich" /etc/opkg/customfeeds.conf 2>/dev/null; then
+        echo -e "\n${CYAN}Добавляем пакеты Routerich${NC}"
+        sed -i 's/option check_signature/# option check_signature/' /etc/opkg.conf
+        echo 'src/gz routerich https://github.com/routerich/packages.routerich/raw/24.10.6/routerich' > /etc/opkg/customfeeds.conf
+    fi
 fi
-else
+
     opkg update
     opkg install zapret2 luci-app-zapret2
+
 wget -qO /opt/zapret2/ipset/zapret_hosts_user_exclude.txt https://raw.githubusercontent.com/StressOzz/Zapret-Manager/refs/heads/main/zapret-hosts-user-exclude.txt
 sed -i "/config strategy 'default'/,/config /s/option enabled '0'/option enabled '1'/" /etc/config/zapret2
 /etc/init.d/zapret2 restart >/dev/null 2>&1
     echo -e "\nZapret2 ${GREEN}установлен${NC}"
 	PAUSE
-fi
 }
 
 remove_zapret() {
@@ -94,20 +97,22 @@ remove_zapret() {
 install_zero() {
 
 if ! echo "$MODEL" | grep -qi routerich; then
-if ! grep -q "routerich/packages.routerich" /etc/opkg/customfeeds.conf 2>/dev/null; then
-    echo -e "\n${CYAN}Добавляем пакеты Routerich${NC}"
-    sed -i 's/option check_signature/# option check_signature/' /etc/opkg.conf
-    echo 'src/gz routerich https://github.com/routerich/packages.routerich/raw/24.10.6/routerich' > /etc/opkg/customfeeds.conf
+    if ! grep -q "routerich/packages.routerich" /etc/opkg/customfeeds.conf 2>/dev/null; then
+        echo -e "\n${CYAN}Добавляем пакеты Routerich${NC}"
+        sed -i 's/option check_signature/# option check_signature/' /etc/opkg.conf
+        echo 'src/gz routerich https://github.com/routerich/packages.routerich/raw/24.10.6/routerich' > /etc/opkg/customfeeds.conf
+    fi
 fi
-else
+
     opkg update
     opkg install zeroblock luci-app-zeroblock
+
 if ! echo "$MODEL" | grep -qi routerich; then
 	sed -i "/option api /s/'v2'/'v1'/" /etc/config/zeroblock
 fi
+
     echo -e "\nZeroBlock ${GREEN}установлен!${NC}"
 	PAUSE
-fi
 }
 
 remove_zero() {
@@ -352,7 +357,7 @@ echo -e "${CYAN}Применяем конфигурацию${NC}"
 /etc/init.d/zeroblock reload >/dev/null 2>&1
 sleep 2
 echo -e "${CYAN}Перезапускаем сервис${NC}"
-/etc/init.d/zeroblockrestart >/dev/null 2>&1
+/etc/init.d/zeroblock restart >/dev/null 2>&1
 echo -e "VPN ${GREEN}подписка интегрирована в ${NC}ZeroBlock${GREEN}!${NC}\n"
 PAUSE
 }
@@ -455,7 +460,7 @@ echo -e "${CYAN}Применяем конфигурацию${NC}"
 /etc/init.d/zeroblock reload >/dev/null 2>&1
 sleep 2
 echo -e "${CYAN}Перезапускаем сервис${NC}"
-/etc/init.d/zeroblockrestart >/dev/null 2>&1
+/etc/init.d/zeroblock restart >/dev/null 2>&1
 echo -e "AWG ${GREEN}интегрирован в ${NC}ZeroBlock${GREEN}!${NC}\n"
 PAUSE
 }
