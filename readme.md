@@ -1,5 +1,13 @@
 # Zapret2 & ZeroВlock Manаger
 
+![Platform](https://img.shields.io/badge/Platform-OpenWrt-orange)
+![Architecture](https://img.shields.io/badge/Architecture-aarch64-yellow)
+![Script](https://img.shields.io/badge/Script-sh-informational)
+![Status](https://img.shields.io/badge/Status-Active-success)
+![Community](https://img.shields.io/badge/Community-Enabled-green)
+[![Views](https://views.whatilearened.today/views/github/StressOzz/Z2R-Manager.svg)](https://github.com/StressOzz/Z2R-Manager)
+![GitHub last commit](https://img.shields.io/github/last-commit/StressOzz/Zapret-Manager)
+
 Скрипт для установки Zapret2 и ZeroВlock от Routerich
 
 > [!IMPORTANT]
