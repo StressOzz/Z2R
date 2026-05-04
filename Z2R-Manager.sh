@@ -9,6 +9,8 @@ NC="\033[0m"
 BLUE="\033[0;34m"
 DGRAY="\033[38;5;244m"
 
+echo 'sh <(wget -O - https://raw.githubusercontent.com/StressOzz/Z2R-Manager/main/Z2R-Manager.sh)' > /usr/bin/z2r; chmod +x /usr/bin/z2r
+
 MODEL="$(cat /tmp/sysinfo/model 2>/dev/null)"
 BASE_URL="https://github.com/Slava-Shchipunov/awg-openwrt/releases/download/"
 tmpDIR="/tmp"
