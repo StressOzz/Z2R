@@ -11,13 +11,18 @@
 Скрипт для установки Zapret2 и ZeroВlock от Routerich
 
 > [!IMPORTANT]
-> ### Только для архитектуры _aarch64_cortex-a53_ и для _OpenWRT 24_ !!!
+> ### Только для архитектуры _aarch64_cortex-a53_ !!!
 
 ---
 
-- Установка
+- Установка ТОЛЬКО для _OpenWRT 24_
 ```
 sh <(wget -O - https://raw.githubusercontent.com/StressOzz/Z2R-Manager/main/Z2R-Manager.sh)
+```
+
+- Установка для _OpenWRT 24_ и для _25_ (тест)
+```
+sh <(wget -O - https://raw.githubusercontent.com/StressOzz/Test/main/Z2R_25O.sh)
 ```
 
 -  Интегрировать **VPN** подписку в **Zeroblock**
