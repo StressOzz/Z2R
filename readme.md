@@ -8,10 +8,16 @@
 [![Views](https://views.whatilearened.today/views/github/StressOzz/Z2R-Manager.svg)](https://github.com/StressOzz/Z2R-Manager)
 ![GitHub last commit](https://img.shields.io/github/last-commit/StressOzz/Zapret-Manager)
 
-Скрипт для установки Zapret2 и ZeroВlock от Routerich
+Скрипт для установки **Zapret2** и **ZeroВlock** от **Routerich**
 
 > [!IMPORTANT]
 > ### Только для архитектуры _aarch64_cortex-a53_ !!!
+
+> [!IMPORTANT]
+> При возникновении проблем с запуском скрипта или его функций выполните в **SSH** следующую команду:
+> ```
+> git="githubusercontent.com"; printf "#$git\n185.199.109.133 raw.$git release-assets.$git\n185.199.108.133 private-user-images.$git\n" >> /etc/hosts; /etc/init.d/dnsmasq restart >/dev/null 2>&1; echo -e "\n\033[0;32mOK\n\033[0m"
+> ```
 
 ---
 
