@@ -49,7 +49,7 @@ routerich_add() {
 	return
 	fi
     sed -i 's/option check_signature/# option check_signature/' /etc/opkg.conf
-    echo 'src/gz routerich https://github.com/routerich/packages.routerich/raw/24.10.6/routerich' > /etc/opkg/customfeeds.conf
+    echo 'src/gz routerich https://github.com/routerich/packages.routerich/raw/24.10.5/routerich' > /etc/opkg/customfeeds.conf
     opkg update
     echo -e "\n${GREEN}Пакеты ${NC}Routerich${GREEN} добавлены!${NC}"
 	PAUSE
@@ -74,7 +74,7 @@ if ! echo "$MODEL" | grep -qi routerich; then
     if ! grep -q "routerich/packages.routerich" /etc/opkg/customfeeds.conf 2>/dev/null; then
         echo -e "\n${CYAN}Добавляем пакеты Routerich${NC}"
         sed -i 's/option check_signature/# option check_signature/' /etc/opkg.conf
-        echo 'src/gz routerich https://github.com/routerich/packages.routerich/raw/24.10.6/routerich' > /etc/opkg/customfeeds.conf
+        echo 'src/gz routerich https://github.com/routerich/packages.routerich/raw/24.10.5/routerich' > /etc/opkg/customfeeds.conf
     fi
 fi
 
@@ -102,7 +102,7 @@ if ! echo "$MODEL" | grep -qi routerich; then
     if ! grep -q "routerich/packages.routerich" /etc/opkg/customfeeds.conf 2>/dev/null; then
         echo -e "\n${CYAN}Добавляем пакеты Routerich${NC}"
         sed -i 's/option check_signature/# option check_signature/' /etc/opkg.conf
-        echo 'src/gz routerich https://github.com/routerich/packages.routerich/raw/24.10.6/routerich' > /etc/opkg/customfeeds.conf
+        echo 'src/gz routerich https://github.com/routerich/packages.routerich/raw/24.10.5/routerich' > /etc/opkg/customfeeds.conf
     fi
 fi
 
