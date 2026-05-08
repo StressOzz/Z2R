@@ -7,6 +7,7 @@
 ![Community](https://img.shields.io/badge/Community-Enabled-green)
 [![Views](https://views.whatilearened.today/views/github/StressOzz/Z2R-Manager.svg)](https://github.com/StressOzz/Z2R-Manager)
 ![GitHub last commit](https://img.shields.io/github/last-commit/StressOzz/Zapret-Manager)
+![Downloads](https://img.shields.io/github/downloads/StressOzz/Zapret-Manager/total)
 
 Скрипт для установки **Zapret2** и **ZeroВlock** от **Routerich**
 
