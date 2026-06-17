@@ -23,7 +23,7 @@ else
     PKG_REMOVE="apk del"
     PKG_TYPE="apk"
     ARCH_SUFFIX=""
-    UPDATE="apk update"
+    ="apk "
     CHECK_INSTALLED() { apk list --installed 2>/dev/null | grep -q "^$1"; }
 fi
 
@@ -246,6 +246,7 @@ install_package() {
     
     if [ -n "$packages_to_install" ]; then
         $PKG_INSTALL $packages_to_install
+		$PKG_INSTALL sing-box
         sleep 2
         if [ $? -eq 0 ]; then
             # Перезапускаем веб-интерфейс если установлен luci
@@ -490,7 +491,146 @@ run_action() {
         log "${RED}Ошибка: пакет $pkg_name недоступен${NC}"
     fi
 }
+###################################################################################################################################################
 
+PODPISKA() {
+    echo -ne "\n${YELLOW}Введите ссылку на подписку (${NC}https://...${YELLOW}): ${NC}"
+    read -r SUB_URL
+    [ -z "$SUB_URL" ] && echo -e "\n${RED}Ошибка! Ссылка пустая!${NC}" && PAUSE && return
+    
+cat > /etc/config/zeroblock << EOF
+config settings 'settings'
+	option log_level 'error'
+	option show_trace_logs '0'
+	option health_interval '600'
+	option health_dns_check '1'
+	option health_ping_ip '1.1.1.1 8.8.8.8'
+	option health_opera_host 'ya.ru google.com'
+	option update_interval '1d'
+	option timeout_dnsmasq_restart '150'
+	option api 'v1'
+	option health_enabled '1'
+	option update_time '09:00'
+	option enable_bad_interface_monitoring '0'
+	option download_lists_via_proxy '0'
+	option auto_fallback_two_stage '1'
+	option timeout_singbox_check '60'
+	option timeout_singbox_kill '15'
+	option health_dns_server_check '0'
+	option health_dns_test_host 'dns.google'
+	option dns_query_timeout '15'
+	option singbox_double_check '0'
+	option singbox_double_check_delay '15'
+	option lists_tls_insecure '0'
+	option opera_proxy_enabled '1'
+	option timeouts_forced_to_max_v4 '1'
+	option text_lists_migrated '1'
+	option sub_max_proxies_capped '1'
+	option schema_version '44'
+	option subscription_update_interval '1h'
+
+config section 'StressKVN'
+	option connection_type 'proxy'
+	option dscp_enabled '0'
+	option proxy_config_type 'subscription'
+	list subscription_url '$SUB_URL'
+	option urltest_check_interval '3m'
+	option urltest_tolerance '150'
+	option disable_fakeip '0'
+	option force_cidr_community '0'
+	option community_lists_invert '0'
+	option enabled '1'
+	list subscription_ignore_tags '⬇️'
+	list subscription_ignore_tags 'LTE'
+	list subscription_ignore_tags 'Auto'
+	list subscription_ignore_tags 'Авто'
+	list community_lists 'anime'
+	list community_lists 'block'
+	list community_lists 'cloudflare'
+	list community_lists 'cloudfront'
+	list community_lists 'digitalocean'
+	list community_lists 'discord'
+	list community_lists 'geoblock'
+	list community_lists 'google_ai'
+	list community_lists 'google_meet'
+	list community_lists 'google_play'
+	list community_lists 'hdrezka'
+	list community_lists 'hetzner'
+	list community_lists 'hodca'
+	list community_lists 'meta'
+	list community_lists 'news'
+	list community_lists 'ovh'
+	list community_lists 'porn'
+	list community_lists 'roblox'
+	list community_lists 'telegram'
+	list community_lists 'tiktok'
+	list community_lists 'twitter'
+	list community_lists 'youtube'
+
+config auto_config 'auto_config'
+
+config dashboard 'dashboard'
+
+config diagnostic 'diagnostic'
+
+config engine 'engine'
+	option dns_type 'udp'
+	option dns_server '8.8.8.8'
+	option dns_rewrite_ttl '60'
+	option dns_strategy 'ipv4_only'
+	option clash_api_enabled '1'
+	option clash_api_port '9090'
+	option tproxy_mark '0x10000'
+	option direct_mark '0x20000'
+	option bt_mark '0x40000'
+	option ctmark_dns '0x10000'
+	option ctmark_bt '0x40000'
+	option disable_quic '1'
+	option desync_mark '0x40000000'
+	option log_level 'error'
+	option dont_touch_dhcp '0'
+	option dns_hijack '0'
+	option enable_output_network_interface '0'
+	option proxy_router_traffic '0'
+	option ipv6_enabled '0'
+	option discord_voice '1'
+	option meta_force_cidr '1'
+	option exclude_bittorrent '1'
+	option exclude_ntp '1'
+	option singbox_logging '0'
+	option xray_logging '0'
+	option trusttunnel_logging '0'
+	option fakeip_query_type_filter '1'
+	option xray_path '/usr/bin/xray'
+	option trusttunnel_path '/usr/bin/trusttunnel_client'
+	option custom_config_dir '/etc/zeroblock/sing-box.d'
+	option dpi_check_timeout '15'
+	option adblock_convert_timeout '300'
+	option fallback_probe_timeout_default '3'
+	option singbox_startup_timeout '150000'
+	option xray_startup_timeout '60000'
+	option trusttunnel_startup_timeout '60000'
+	option version_check_timeout '31'
+	option bootstrap_port_free_timeout '5250'
+	option singbox_sighup_wait_timeout '15500'
+	option subscription_timeout '60000'
+	option subscription_max_proxies '100'
+	option subscription_user_agent 'clash-verge/v2.0.0'
+	option subscription_tls_insecure '0'
+	list source_network_interfaces 'br-lan'
+	option testing_url 'http://www.gstatic.com/generate_204'
+	option naive_logging '0'
+	option global_exclude_mode 'route'
+EOF
+
+echo -e "${CYAN}Применяем конфигурацию${NC}"
+/etc/init.d/zeroblock reload >/dev/null 2>&1
+sleep 2
+echo -e "${CYAN}Перезапускаем сервис${NC}"
+/etc/init.d/zeroblock restart >/dev/null 2>&1
+echo -e "VPN ${GREEN}подписка интегрирована в ${NC}ZeroBlock${GREEN}!${NC}"
+PAUSE
+}
 ### =======================================================================
 ### МЕНЮ
 ### =======================================================================
@@ -506,7 +646,8 @@ echo -e "╚══════════════════════�
         echo -e "${CYAN}1)${NC} $(get_menu_label zapret2)"
         echo -e "${CYAN}2)${NC} $(get_menu_label zeroblock)"
         echo -e "${CYAN}3)${NC} $(get_awg_menu_label)"
-        echo -e "${CYAN}Enter) ${GREEN}Выход${NC}"
+        echo -e "${CYAN}4) ${GREEN}Интегрировать ${NC}VPN${GREEN} подписку в ${NC}ZeroBlock${NC}"
+        echo -e "${CYAN}Enter) ${GREEN}Выход${NC}\n"
         
         echo -en "${YELLOW}Выберите пункт:${NC} "
         read -r user_choice
@@ -519,6 +660,7 @@ sed -i "/config strategy 'default'/,/config /s/option enabled '0'/option enabled
 PAUSE ;;       
             2) run_action zeroblock; PAUSE ;;
             3) run_awg_action; PAUSE ;;
+            4) PODPISKA ;;
             *) exit 0 ;;
         esac
     done
