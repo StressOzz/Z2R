@@ -22,15 +22,16 @@
 
 ---
 
+- Установка для _OpenWRT_ версии _24_ и  _25_
+```
+sh <(wget -O - https://raw.githubusercontent.com/StressOzz/Z2R-Manager/main/Z2R-Manager-24-25.sh)
+```
+
 - Установка ТОЛЬКО для _OpenWRT 24_
 ```
 sh <(wget -O - https://raw.githubusercontent.com/StressOzz/Z2R-Manager/main/Z2R-Manager.sh)
 ```
 
-- Установка для _OpenWRT 24_ и для _25_ (тест)
-```
-sh <(wget -O - https://raw.githubusercontent.com/StressOzz/Test/main/Z2R_25O.sh)
-```
 
 -  Интегрировать **VPN** подписку в **Zeroblock**
 
