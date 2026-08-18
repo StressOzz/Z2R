@@ -23,7 +23,7 @@ else
     PKG_REMOVE="apk del"
     PKG_TYPE="apk"
     ARCH_SUFFIX=""
-    ="apk "
+	UPDATE="apk update"
     CHECK_INSTALLED() { apk list --installed 2>/dev/null | grep -q "^$1"; }
 fi
 
@@ -244,19 +244,26 @@ install_package() {
     log "${CYAN}Установка пакетов...${NC}"
     local packages_to_install=$(ls "$TMP_DIR"/*.$PKG_EXT 2>/dev/null)
     
+    
     if [ -n "$packages_to_install" ]; then
-        $PKG_INSTALL $packages_to_install
-		$PKG_INSTALL sing-box
-        sleep 2
-        if [ $? -eq 0 ]; then
-            # Перезапускаем веб-интерфейс если установлен luci
-            if [ -n "$LUCI_FILE" ]; then
-                log "${GREEN}✓ Установка завершена${NC}"
-            fi
-        else
-            log "${RED}✗ Ошибка при установке${NC}"
+        if ! $PKG_INSTALL $packages_to_install; then
+            log "${RED}✗ Ошибка установки $pkg_name${NC}"
+            log "${RED}Установка остановлена!${NC}"
+            rm -f "$TMP_DIR"/*.$PKG_EXT
+            return 1
         fi
+
+        if ! $PKG_INSTALL sing-box; then
+            log "${RED}✗ Ошибка установки sing-box${NC}"
+            log "${RED}Установка остановлена!${NC}"
+            rm -f "$TMP_DIR"/*.$PKG_EXT
+            return 1
+        fi
+
+        sleep 2
+        log "${GREEN}✓ Установка завершена${NC}"
     fi
+	
     
     # Очистка
     rm -f "$TMP_DIR"/*.$PKG_EXT
@@ -662,7 +669,28 @@ PAUSE ;;
             2) run_action zeroblock; PAUSE ;;
             3) run_awg_action; PAUSE ;;
             4) PODPISKA ;;
-			5) sh <(wget -O - https://raw.githubusercontent.com/StressOzz/Z2R-Manager/main/ZeroBlock_zavisimosti.sh); PAUSE;;
+			5) 
+echo -e "\n${YELLOW}ВНИМАНИЕ !!!${NC}"
+echo -e "${CYAN}Будут установлены библиотеки из ${NC}OpenWrt Snapshot${CYAN}:${NC}"
+echo
+echo -e "  ${YELLOW}•${NC} libubox20260721"
+echo -e "  ${YELLOW}•${NC} libblobmsg-json20260721"
+echo -e "  ${YELLOW}•${NC} libubus20260628"
+echo -e "  ${YELLOW}•${NC} libyaml-0.2.5"
+echo
+echo -e "${CYAN}Эти пакеты необходимы для работы ${NC}ZeroBlock"
+echo
+echo -ne "${YELLOW}Продолжить установку? (${NC}Y/n${YELLOW}): ${NC}"
+read -r CONFIRM
+
+case "$CONFIRM" in
+    n|N|т|Т)
+        echo -e "\n${RED}Установка отменена!${NC}"
+		PAUSE
+		continue
+        ;;
+esac
+			sh <(wget -q -O - https://raw.githubusercontent.com/StressOzz/Z2R-Manager/main/ZeroBlock_zavisimosti.sh); PAUSE;;
             *) exit 0 ;;
         esac
     done
