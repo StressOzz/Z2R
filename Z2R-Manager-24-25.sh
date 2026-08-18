@@ -646,7 +646,8 @@ echo -e "╚══════════════════════�
         echo -e "${CYAN}1)${NC} $(get_menu_label zapret2)"
         echo -e "${CYAN}2)${NC} $(get_menu_label zeroblock)"
         echo -e "${CYAN}3)${NC} $(get_awg_menu_label)"
-        echo -e "${CYAN}4) ${GREEN}Интегрировать ${NC}VPN${GREEN} подписку в ${NC}ZeroBlock${NC}"
+        echo -e "${CYAN}4) ${GREEN}Интегрировать ${NC}VPN${GREEN} подписку в ${NC}ZeroBlock"
+        echo -e "${CYAN}5) ${GREEN}Установить зависимости для ${NC}ZeroBlock"
         echo -e "${CYAN}Enter) ${GREEN}Выход${NC}\n"
         
         echo -en "${YELLOW}Выберите пункт:${NC} "
@@ -661,6 +662,7 @@ PAUSE ;;
             2) run_action zeroblock; PAUSE ;;
             3) run_awg_action; PAUSE ;;
             4) PODPISKA ;;
+			5) sh <(wget -O - https://raw.githubusercontent.com/StressOzz/Z2R-Manager/main/ZeroBlock_zavisimosti.sh); PAUSE;;
             *) exit 0 ;;
         esac
     done
