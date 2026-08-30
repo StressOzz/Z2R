@@ -5,6 +5,11 @@
 ![Script](https://img.shields.io/badge/Script-sh-informational)
 [![Views](https://views.whatilearened.today/views/github/StressOzz/Z2R-Manager.svg)](https://github.com/StressOzz/Z2R-Manager)
 
+<p align="center">
+  <a href="https://t.me/stressozz_manager">💬 Telegram Community</a>
+</p>
+
+
 Скрипт для установки **Zapret2** и **ZeroВlock** от **Routerich**
 
 ---
