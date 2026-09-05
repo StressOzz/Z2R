@@ -245,7 +245,7 @@ install_package() {
     local packages_to_install=$(ls "$TMP_DIR"/*.$PKG_EXT 2>/dev/null)
     
     
-    if [ -n "$packages_to_install" ]; then
+ if [ -n "$packages_to_install" ]; then
         if ! $PKG_INSTALL $packages_to_install; then
             log "${RED}✗ Ошибка установки $pkg_name${NC}"
             log "${RED}Установка остановлена!${NC}"
@@ -253,11 +253,13 @@ install_package() {
             return 1
         fi
 
-        if ! $PKG_INSTALL sing-box; then
-            log "${RED}✗ Ошибка установки sing-box${NC}"
-            log "${RED}Установка остановлена!${NC}"
-            rm -f "$TMP_DIR"/*.$PKG_EXT
-            return 1
+        if [ "$pkg_name" = "zeroblock" ]; then
+            if ! $PKG_INSTALL sing-box; then
+                log "${RED}✗ Ошибка установки sing-box${NC}"
+                log "${RED}Установка остановлена!${NC}"
+                rm -f "$TMP_DIR"/*.$PKG_EXT
+                return 1
+            fi
         fi
 
         sleep 2
